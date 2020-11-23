@@ -61,7 +61,7 @@ const mainFunction = (state) => {
 
     // Print the HTML and add buttons onclick event to fetch API
     return `
-    <div class="container">
+    <div id="container-intro" class="container">
 
         <div class="row">
 
@@ -72,7 +72,7 @@ const mainFunction = (state) => {
             <h2>${launch_date}</h2>
             <h2>${landing_date}</h2>
             <h2>${status}</h2>
-            <p><a id="btn-0" onclick="updateVault(vault, {roverSelection: '', info: ''})" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <p><a id="btn-0" onclick="createTags(${state})" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
 
         </div>
 
@@ -95,7 +95,15 @@ const mainFunction = (state) => {
         </div>
 
     </div>
-    `  
+    `
+}
+
+// ------------------------------------------------------  HIGUER ORDER FUNCTIONS
+
+const createTags = (state, ) => {
+    let containerIntro = document.getElementById('container-intro');
+    containerIntro.style.display = 'none';
+    return `` //here comes the rover grid
 }
 
 const roverGrid = (rover) => ``;
@@ -105,14 +113,12 @@ const photoHTML = (url) => `<img class="photo" src="${url}"/>`;
 
 // ------------------------------------------------------  API CALLS
 
-// Example API call
-
-const getInfoRovers = (info) => {
-    console.log(info);
-    let { roverSelection }  = info; // Devuelve undefined no se porqué. Con Object.assign tampoco funciona
+const getInfoRovers = (state) => {
+    console.log(state);
+    [roverSelection] = state;// Devuelve undefined no se porqué. Con Object.assign tampoco funciona. JSON.parse no funciona. { [roverSelection] } : state no funciona
     console.log('API working');
 
     fetch(`rover-photos/${roverSelection}`)
         .then(res => res.json())
-        .then(info => updateVault(vault, { info }))
+        .then(info => updateVault(vault, { state }))
 }
