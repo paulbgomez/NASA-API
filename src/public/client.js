@@ -1,8 +1,7 @@
-// 1º charge all the elements // 
+// 1º Charge all the elements // OK
 // Global variables
 window.onload = function(){
     render(root, vault)
-    console.log('on load')
 }
 
 const root = document.getElementById('root')
@@ -11,7 +10,12 @@ let vault = {
     rovers: ['curiosity', 'opportunity', 'spirit'],
     roverSelection: '',
     info: '',
-    //mas variables?
+}
+
+//We call the render with root and the state(as the updatevault)
+const render = async (root, state) => {
+    root.innerHTML = App(state);
+    console.log('render');
 }
 
 //We update the vault and make sure that the newState applies all the updated values to vault
@@ -21,63 +25,94 @@ const updateVault = (vault, newState) => {
     console.log('updateVault');
 }
 
-//We call the render with root and the state(as the updatevault)
-const render = async (root, state) => {
-    root.innerHTML = App(state);
-    console.log('render');
-}
-
-// We write the HTML<root> with the updatedvault objects
+// We write the HTML<root> with the main function inside
 const App = (state) => {
     return `
-    <div class="container">
-
-    <!-- Three columns of text below the carousel -->
-    <div class="row">
-      <div id="col-rover-0" class="col-lg-4">
-        <img src="../public/assets/${state.rovers[0]}.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-        <h2>${state.rovers[0]}</h2>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div d="col-rover-1" class="col-lg-4">
-        <img src="../public/assets/${state.rovers[1]}.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-        <h2>${state.rovers[1]}</h2>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-      <div d="col-rover-2" class="col-lg-4">
-        <img src="../public/assets/${state.rovers[2]}.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-        <h2>${state.rovers[2]}</h2>
-        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-      </div><!-- /.col-lg-4 -->
-    </div><!-- /.row -->
-
-  </div><!-- /.container -->
-    `
+        <div>
+            ${mainFunction(state)}
+        </div>`
 }
-
-// Add eventlisteners and buttons functionality for the HTML
-
-// 
 
 // ------------------------------------------------------  COMPONENTS
 
-const roverInfo = () => {
-    if(vault.info == undefined){
-        console.log('rover info');
-        getInfoRovers(vault);
+const mainFunction = (state) => {
+
+    // Call the API if there is no info // Trying with curiosity
+    if (!state.info) {
+        getInfoRovers(state.rovers[2]);
+        console.log('funct working js43') //OK
     }
-    console.log(vault.info);
+
+    //console.log(state.rovers[0]) works
+    
+    // Get photos from API 
+    let photos = state;
+
+    console.log(photos)
+
+    // Map photo URLS to use afterwards with HTML function
+    const URL = photos.map(photo => photo.img_src);
+
+    // Same day for all the photos [0]
+    const date = photos[0].earth_date;
+
+    // Get the required mission data to paint inside this function return
+    const { name, launch_date, landing_date, status } = photos[0].rover
+
+    // Print the HTML and add buttons onclick event to fetch API
+    return `
+    <div class="container">
+
+        <div class="row">
+
+        <div id="col-rover-0" class="col-lg-4">
+
+            <img src="../public/assets/curiosity.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
+            <h2>${name}</h2>
+            <h2>${launch_date}</h2>
+            <h2>${landing_date}</h2>
+            <h2>${status}</h2>
+            <p><a id="btn-0" onclick="updateVault(vault, {roverSelection: '', info: ''})" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+
+        </div>
+
+        <div d="col-rover-1" class="col-lg-4">
+
+            <img src="../public/assets/opportunity.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
+            <h2>OPPORTUNITY</h2>
+            <p><a id="btn-1" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+
+        </div>
+
+        <div d="col-rover-2" class="col-lg-4">
+
+            <img src="../public/assets/spirit.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
+            <h2>SPIRIT</h2>
+            <p><a id="btn-2" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+
+        </div>
+
+        </div>
+
+    </div>
+    `  
 }
+
+const roverGrid = (rover) => ``;
+
+const photoHTML = (url) => `<img class="photo" src="${url}"/>`;
 
 
 // ------------------------------------------------------  API CALLS
 
 // Example API call
 
-const getInfoRovers = (state) => {
-    const { selectRover } = state
+const getInfoRovers = (info) => {
+    console.log(info);
+    let { roverSelection }  = info; // Devuelve undefined no se porqué. Con Object.assign tampoco funciona
+    console.log('API working');
 
-    fetch(`http://localhost:3000/rover-photos/${selectRover}`)
+    fetch(`rover-photos/${roverSelection}`)
         .then(res => res.json())
-        .then(info => updateVault(vault, { info })) //???
+        .then(info => updateVault(vault, { info }))
 }
