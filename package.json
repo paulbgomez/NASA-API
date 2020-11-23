@@ -16,5 +16,8 @@
     "immutable": "^4.0.0-rc.12",
     "node-fetch": "^2.6.0",
     "nodemon": "^2.0.6"
+  },
+  "devDependencies": {
+    "eslint": "^7.14.0"
   }
 }
