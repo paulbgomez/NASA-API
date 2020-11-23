@@ -2,12 +2,13 @@
 // Global variables
 window.onload = function(){
     render(root, vault)
+    console.log('on load')
 }
 
 const root = document.getElementById('root')
 
 let vault = {
-    rovers: ['Curiosity', 'Opportunity', 'Spirit'],
+    rovers: ['curiosity', 'opportunity', 'spirit'],
     roverSelection: '',
     info: '',
     //mas variables?
@@ -22,56 +23,52 @@ const updateVault = (vault, newState) => {
 
 //We call the render with root and the state(as the updatevault)
 const render = async (root, state) => {
-    root.innerHTML = App(state)
+    root.innerHTML = App(state);
     console.log('render');
 }
 
 // We write the HTML<root> with the updatedvault objects
-const App = () => {
+const App = (state) => {
     return `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#"></a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-                <div class="navbar-nav">
-                    <a class="nav-item nav-link" href="#">Home</a>
-                    <a class="nav-item nav-link" href="/rover-photos/spirit">Spirit</a>
-                    <a class="nav-item nav-link" href="/rover-photos/opportunity">Opportunity</a>
-                    <a class="nav-item nav-link" href="/rover-photos/curiosity">Cursiosity</a>
-                </div>
-            </div>
-    </nav>
+    <div class="container">
+
+    <!-- Three columns of text below the carousel -->
+    <div class="row">
+      <div id="col-rover-0" class="col-lg-4">
+        <img src="../public/assets/${state.rovers[0]}.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
+        <h2>${state.rovers[0]}</h2>
+        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div d="col-rover-1" class="col-lg-4">
+        <img src="../public/assets/${state.rovers[1]}.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
+        <h2>${state.rovers[1]}</h2>
+        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+      <div d="col-rover-2" class="col-lg-4">
+        <img src="../public/assets/${state.rovers[2]}.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
+        <h2>${state.rovers[2]}</h2>
+        <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+      </div><!-- /.col-lg-4 -->
+    </div><!-- /.row -->
+
+  </div><!-- /.container -->
     `
 }
+
+// Add eventlisteners and buttons functionality for the HTML
+
+// 
 
 // ------------------------------------------------------  COMPONENTS
 
 const roverInfo = () => {
     if(vault.info == undefined){
-        console.log('mierda');
+        console.log('rover info');
         getInfoRovers(vault);
     }
     console.log(vault.info);
 }
 
-const displayRovers = () => {
-    return `
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                1 of 3
-            </div>
-            <div class="col">
-                2 of 3
-            </div>
-            <div class="col">
-                3 of 3
-            </div>
-        </div>
-    </div>`
-}
 
 // ------------------------------------------------------  API CALLS
 
@@ -84,4 +81,3 @@ const getInfoRovers = (state) => {
         .then(res => res.json())
         .then(info => updateVault(vault, { info })) //???
 }
-
