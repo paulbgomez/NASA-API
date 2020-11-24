@@ -13,13 +13,12 @@ const rovers = ['curiosity', 'opportunity', 'spirit'];
 
 let state = {
     roverSelection: '',
-    info: '',
-    latest_photos: []
 };
 
 // ------------------------------------------------------  FUNCTIONS
 
 const renderMain = () => {
+    root.style.display = 'none';
     let menuHTML = '';
     for (let i = 0; i < rovers.length; i++) {
        menuHTML += `<div>
@@ -37,68 +36,43 @@ const startApp = (root) => {
     root.innerHTML = renderMain();
 };
 
+const updateState = (state, newState) => {
+    state = Object.assign(state, newState);
+    renderRover(state);
+}
+
 // ------------------------------------------------------  COMPONENTS
 
 function loadRover(){
 
+    //Get the name of the selected rover
     state.roverSelection = this.dataset.name;
 
+    //Call to the API
     getInfoRovers(state);
-
-    //Get photos from API
-    
-    
-    
-    // Map photo URLS to use afterwards with HTML function
-    //const URL = photos.map(photo => photo.img_src);
-    //console.log(URL);
-
-
-    // Get the required mission data to paint inside the main function return
-    //const infoRover = {
-    //    name: photos.rover.name,
-    //    //launch_date
-    //    //landing_date
-    //    //status
-    //};
-
-    // Print the HTML and add buttons onclick event to fetch API
-    let result = `
-    <div id="container-intro" class="container">
-
-        <div class="row">
-
-        <div id="col-rover-0" class="col-lg-4">
-
-            <img src="../public/assets/curiosity.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-            <h2> </h2>
-            <p><a id="btn-0" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-
-        </div>
-
-        <div d="col-rover-1" class="col-lg-4">
-
-            <img src="../public/assets/opportunity.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-            <h2>OPPORTUNITY</h2>
-            <p><a id="btn-1" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-
-        </div>
-
-        <div d="col-rover-2" class="col-lg-4">
-
-            <img src="../public/assets/spirit.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-            <h2>SPIRIT</h2>
-            <p><a id="btn-2" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-
-        </div>
-
-        </div>
-
-    </div>
-    `
-    console.log(result);
-    return root.innerHTML = result;
 }
+
+function renderRover(state){
+
+    //Get API photos
+    let photos = state.state.latest_photos;
+    console.log(photos);
+
+    // Map photo URLS to use afterwards with HTML function
+    const URL = photos.map(photo => photo.img_src);
+    console.log(URL);
+
+    // Put rover data inside an object to display in a HTML
+    const data = {
+       name: photos[0].rover.name,
+       launchDate: photos[0].rover.launch_date,
+       landingDate: photos[0].rover.landing_date,
+       missionStatus: photos[0].rover.status
+    }
+    console.log(data);
+
+}
+
 
 // ------------------------------------------------------  HIGUER ORDER FUNCTIONS
 
@@ -120,15 +94,5 @@ const photoHTML = (url) => `<img class="photo" src="${url}"/>`;
 const getInfoRovers = (state) => {
     fetch(`rover-photos/${state.roverSelection}`)
         .then(res => res.json())
-        .then(state => { state })
+        .then(roverData => updateState(state, roverData));
 }
-
-
-//function StartApp
-    //Renderizo (function renderMain) 3 opciones de Menú
-
-
-//Evento que al clickar en un botón (function loadRover) fetchea la api ("rovers/*"), recoge el nombre del rover en cuestión y empieza la carga de la pantalla de ese rover
-    //Recoger el nombre del rover
-    //Llama a la API y recoge el resto de propiedades del rover en cuestión (state)
-        //Pinto (renderRover) los datos del rover + las imágenes que me interesan
