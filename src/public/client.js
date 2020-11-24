@@ -5,10 +5,7 @@ window.onload = function(){
 }
 
 const root = document.getElementById('root')
-/*
-*** {array} rovers. Immutable array with the three rovers.
-*** {object} state. Empty object that we will use along the program to store data from the API
-*/
+
 const rovers = ['curiosity', 'opportunity', 'spirit'];
 
 let state = {
@@ -56,11 +53,9 @@ function renderRover(state){
 
     //Get API photos
     let photos = state.state.latest_photos;
-    console.log(photos);
 
     // Map photo URLS to use afterwards with HTML function
     const URL = photos.map(photo => photo.img_src);
-    console.log(URL);
 
     // Put rover data inside an object to display in a HTML
     const data = {
@@ -69,7 +64,21 @@ function renderRover(state){
        landingDate: photos[0].rover.landing_date,
        missionStatus: photos[0].rover.status
     }
-    console.log(data);
+
+    const displayImg = () => {
+        root.style.display = 'block';
+        root.innerHTML = URL.map((url) => `
+            <div class="carousel-item">
+                <img class="carousel-item__img" src="${url}" alt="mars surface">
+                <div class="carousel-item__details">
+                    <p class="carousel-item__details--name">${data.name}</p>
+                    <p class="carousel-item__details--launch">Launched on ${data.launchDate}</p>
+                    <p class="carousel-item__details--land">Landed on ${data.landingDate}</p>
+                </div>
+            </div>`);
+    }
+
+    displayImg();
 
 }
 

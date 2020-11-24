@@ -5,6 +5,8 @@ body {
   flex-direction: column;
   font-family: Arial;
   min-height: 100vh;
+  background: rgb(232,232,232);
+  background: linear-gradient(0deg, rgba(232,232,232,1) 32%, rgba(244,171,141,0.9037990196078431) 100%);
 }
 
 header {
@@ -14,7 +16,111 @@ header {
 main {
   flex: 1;
   padding: 20px;
+  margin: 0px;
 }
+
+.carousel {
+  overflow: scroll;
+  padding-left: 30px;
+  width: 100%;
+  position: relative;
+}
+
+.carousel__container {
+  transition: 450ms -webkit-transform;
+  transition: 450ms transform;
+  transition: 450ms transform, 450ms -webkit-transform;
+  font-size: 0;
+  white-space: nowrap;
+  margin: 70px 0px;
+  padding-bottom: 10px;
+}
+
+.carousel__container:hover .carousel-item {
+  opacity: 0.3;
+}
+
+.carousel__container:hover .carousel-item:hover {
+  -webkit-transform: scale(1.5);
+  transform: scale(1.5);
+  opacity: 1;
+}
+
+.carousel-item {
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  width: 200px;
+  height: 250px;
+  margin-right: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  transition: 450ms all;
+  -webkit-transform-origin: center left;
+  transform-origin: center left;
+}
+
+.carousel-item:hover ~ .carousel-item {
+  -webkit-transform: translate3d(100px, 0, 0);
+  transform: translate3d(100px, 0, 0);
+}
+
+.carousel-item__img {
+  width: 200px;
+  height: 250px;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+.carousel-item__details {
+  align-items: flex-start;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0) 100%);
+  bottom: 0;
+  display: flex;
+  font-size: 10px;
+  flex-direction: column;
+  justify-content: flex-end;
+  left: 0;
+  opacity: 0;
+  transition: 450ms opacity;
+  padding: 10px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.carousel-item__details--img {
+  width: 20px;
+}
+
+.carousel-item:hover .carousel-item__details {
+  opacity: 1;
+}
+
+.carousel-item__details--name {
+  color: white;
+  margin: 5px 0px 0px 0px;
+}
+
+.carousel-item__details--launch, .carousel-item__details--land {
+  color: white;
+  font-size: 8px;
+  margin: 3px 0px;
+}
+
+
+.main__input {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid #FFFFFF;
+  border-radius: 25px;
+  font-size: 16px;
+  height: 50px;
+  outline: none;
+  padding: 0 20px;
+  width: 70%;
+}
+
 
 footer {
   /* footer styles */
@@ -36,3 +142,5 @@ footer {
 @media (min-width: 1824px) {
   /* use mobile */
 }
+
+
