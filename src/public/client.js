@@ -1,65 +1,69 @@
 // 1º Charge all the elements // OK
 // Global variables
 window.onload = function(){
-    render(root, vault)
+    startApp(root);
 }
 
 const root = document.getElementById('root')
+/*
+*** {array} rovers. Immutable array with the three rovers.
+*** {object} state. Empty object that we will use along the program to store data from the API
+*/
+const rovers = ['curiosity', 'opportunity', 'spirit'];
 
-let vault = {
-    rovers: ['curiosity', 'opportunity', 'spirit'],
+let state = {
     roverSelection: '',
     info: '',
-}
+    latest_photos: []
+};
 
-//We call the render with root and the state(as the updatevault)
-const render = async (root, state) => {
-    root.innerHTML = App(state);
-    console.log('render');
-}
+// ------------------------------------------------------  FUNCTIONS
 
-//We update the vault and make sure that the newState applies all the updated values to vault
-const updateVault = (vault, newState) => {
-    vault = Object.assign(vault, newState) //target vault -----< source newState
-    render(root, vault)
-    console.log('updateVault');
-}
+const renderMain = () => {
+    let menuHTML = '';
+    for (let i = 0; i < rovers.length; i++) {
+       menuHTML += `<div>
+       <button class="btn" data-name="${rovers[i]}" >${rovers[i]}</button>
+       </div>`;
+    }
+    document.getElementById('box').innerHTML = menuHTML;
+    let arrayButtons = document.getElementsByTagName('button');
+    for (let i = 0; i < arrayButtons.length; i++) {
+        arrayButtons[i].addEventListener('click', loadRover);
+    }
+};
 
-// We write the HTML<root> with the main function inside
-const App = (state) => {
-    return `
-        <div>
-            ${mainFunction(state)}
-        </div>`
-}
+const startApp = (root) => {
+    root.innerHTML = renderMain();
+};
 
 // ------------------------------------------------------  COMPONENTS
 
-const mainFunction = (state) => {
+function loadRover(){
 
-    // Call the API if there is no info // Trying with spirit
-    if (state.info == undefined || !state.info) {
-        getInfoRovers(state.rovers[2]);
-    }
+    state.roverSelection = this.dataset.name;
 
-    //console.log(state.rovers[0]) works
+    getInfoRovers(state);
+
+    //Get photos from API
     
-    // Get photos from API 
-    let photos = state;
-
-    console.log(photos)
-
+    
+    
     // Map photo URLS to use afterwards with HTML function
-    const URL = photos.map(photo => photo.img_src);
+    //const URL = photos.map(photo => photo.img_src);
+    //console.log(URL);
 
-    // Same day for all the photos [0]
-    const date = photos[0].earth_date;
 
     // Get the required mission data to paint inside the main function return
-    const { name, launch_date, landing_date, status } = photos[0].rover;
+    //const infoRover = {
+    //    name: photos.rover.name,
+    //    //launch_date
+    //    //landing_date
+    //    //status
+    //};
 
     // Print the HTML and add buttons onclick event to fetch API
-    return `
+    let result = `
     <div id="container-intro" class="container">
 
         <div class="row">
@@ -67,8 +71,8 @@ const mainFunction = (state) => {
         <div id="col-rover-0" class="col-lg-4">
 
             <img src="../public/assets/curiosity.jpeg" class="bd-placeholder-img rounded-circle" width="140" height="140"  xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice" focusable="false" role="img" aria-label="Placeholder: 140x140"><title>Placeholder</title><rect width="100%" height="100%" fill="#777"/><text x="50%" y="50%" fill="#777" dy=".3em"></text></img>
-            <h2>${name} ${launch_date} ${landing_date} ${status}</h2>
-            <p><a id="btn-0" onclick="createTags(${state})" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+            <h2> </h2>
+            <p><a id="btn-0" class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
 
         </div>
 
@@ -92,10 +96,14 @@ const mainFunction = (state) => {
 
     </div>
     `
+    console.log(result);
+    return root.innerHTML = result;
 }
 
 // ------------------------------------------------------  HIGUER ORDER FUNCTIONS
 
+//Crear funciones que reciban otras funciones por parametro. Funcional
+/*
 const createTags = (state) => {
     let containerIntro = document.getElementById('container-intro');
     containerIntro.style.display = 'none';
@@ -105,16 +113,22 @@ const createTags = (state) => {
 const roverGrid = (rover) => ``;
 
 const photoHTML = (url) => `<img class="photo" src="${url}"/>`;
-
+*/
 
 // ------------------------------------------------------  API CALLS
 
 const getInfoRovers = (state) => {
-    console.log(state);
-    const { roverSelection } = vault; // Devuelve undefined no se porqué. Con Object.assign tampoco funciona. JSON.parse no funciona. { [roverSelection] } : state no funciona
-    console.log('API working');
-
-    fetch(`rover-photos/${roverSelection}`)
+    fetch(`rover-photos/${state.roverSelection}`)
         .then(res => res.json())
-        .then(state => updateVault(vault, { state }))
+        .then(state => { state })
 }
+
+
+//function StartApp
+    //Renderizo (function renderMain) 3 opciones de Menú
+
+
+//Evento que al clickar en un botón (function loadRover) fetchea la api ("rovers/*"), recoge el nombre del rover en cuestión y empieza la carga de la pantalla de ese rover
+    //Recoger el nombre del rover
+    //Llama a la API y recoge el resto de propiedades del rover en cuestión (state)
+        //Pinto (renderRover) los datos del rover + las imágenes que me interesan
