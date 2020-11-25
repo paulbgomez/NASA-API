@@ -5,7 +5,7 @@ window.onload = function(){
     startApp();
 }
 
-const rovers = ['curiosity', 'opportunity', 'spirit'];
+const rovers = ['Curiosity', 'Opportunity', 'Spirit'];
 
 let state = {
     roverSelection: '',
@@ -19,7 +19,7 @@ const startApp = () => {
 const renderMenu = () => {
     const containerMenuItems = document.getElementById('menu-items');
     let menuHTML = '';
-    menuHTML += `<button class="nav-link home">Home</button>`;
+    menuHTML += `<button id="home" class="nav-link home">Home</button>`;
         for (let i = 0; i < rovers.length; i++) {
             menuHTML += `<button class="nav-link" data-name="${rovers[i]}">${rovers[i]}</button>`;
         }
@@ -28,12 +28,13 @@ const renderMenu = () => {
         for (let i = 0; i < arrayButtons.length; i++) {
             arrayButtons[i].addEventListener('click', loadRover);
         }
+    
 }
 
 const updateState = (state, newState) => {
     state = Object.assign(state, newState);
     renderRover(state);
-}
+};
 
 // ------------------------------------------------------  COMPONENTS
 
@@ -77,14 +78,16 @@ function renderRover(state){
                               </div>
                         </section>
                         `;
-   }
+   };
                                                           
     const displayRoverInfo = () => 
         `<img src="./assets/${state.roverSelection}.jpeg" class="img-fluid" alt="image rover">
-                                        <h1 class="text-center">Name: ${data.name}</h1>
-                                        <h2 class="text-center">Launch date: ${data.launchDate}</h2>
-                                        <h2 class="text-center">Landing date: ${data.landingDate}</h2>
-                                        <h2 class="text-center">Mission status: ${data.missionStatus}</h2>
+            <div id="data-info">
+                <h2 class="text-center font-weight-bold">Name: ${data.name}</h2>
+                <h2 class="text-center font-weight-normal">Launch date: ${data.launchDate}</h2>
+                <h2 class="text-center font-weight-normal">Landing date: ${data.landingDate}</h2>
+                <h2 class="text-center font-weight-normal">Mission status: ${data.missionStatus}</h2>
+            </div>
         `;
     
     const displayImg = () => {
@@ -100,7 +103,7 @@ function renderRover(state){
             }
         }
         return html;
-    }
+    };
 
     paintRovers(displayRoverInfo, displayImg);
 

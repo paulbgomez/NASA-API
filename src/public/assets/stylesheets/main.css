@@ -32,6 +32,11 @@ main {
 
 }
 
+#data-info{
+  font-family: 'Orbitron', sans-serif;
+}
+
+
 
 #image-container img:hover{
   transform: scale(1.1);   
