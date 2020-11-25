@@ -1,5 +1,6 @@
 // 1º Charge all the elements // OK
 // Global variables
+
 window.onload = function(){
     startApp();
 }
@@ -62,48 +63,53 @@ function renderRover(state){
         photoDate: photos[0].earth_date
     }
 
+    //HOF paintRovers
+    const paintRovers = (displayRoverInfo, displayImg) => `
+                                                            <section id="rover">
+                                                                ${displayRoverInfo()}
+                                                            </section>
+                                                            <section>
+                                                                <div class="container">
+                                                                    <div id="image-container" class="row">
+                                                                        ${displayImg()}
+                                                                    </div>
+                                                                  </div>
+                                                            </section>
+                                                            `;
+
+
     const displayRoverInfo = () => {
         let containerRover = document.getElementById('rover');
         containerRover.innerHTML = `<img src="./assets/${state.roverSelection}.jpeg" class="img-fluid" alt="image rover">
-                                        <h1 class="text-center" >Name: ${data.name}</h1>
-                                        <h2 class="text-center" >Launch date: ${data.launchDate}</h2>
-                                        <h2 class="text-center" >Landing date: ${data.landingDate}</h2>
-                                        <h2 class="text-center" >Mission status: ${data.missionStatus}</h2>
+                                        <h1 class="text-center">Name: ${data.name}</h1>
+                                        <h2 class="text-center">Launch date: ${data.launchDate}</h2>
+                                        <h2 class="text-center">Landing date: ${data.landingDate}</h2>
+                                        <h2 class="text-center">Mission status: ${data.missionStatus}</h2>
         `
     }
     
     const displayImg = () => {
-        let containerRoverPhotos = document.getElementById('rover-photos');
-        console.log(URL[0]);
-        let x ='';
-        x +=`<div class="carousel-item active">
-                <img src="${URL[0]}" class="d-block w-100" >
-            </div>`;
-        x += URL.map((url) => `
-          <div class="carousel-item">
-            <img src="${url}" class="d-block w-100" >
-          </div>`);
-        x += `  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Previous</span>
-                </a>
-                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="sr-only">Next</span>
-                </a>`
-        containerRoverPhotos.innerHTML = x;
-        console.log(containerRoverPhotos)
+        let containerRoverPhotos = document.getElementById('image-container');
+        let html = '';
+        if(URL.length < 3){
+            for(let i = 0; i < URL.length; i++){
+                html += `<div class="col-sm"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
+            }
+        }
+        else{
+            for(let i = 0; i < URL.length; i++){
+                html += `<div class="col-sm-4"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
+            }
+        }
+
+        containerRoverPhotos.innerHTML = html;
     }
 
-    displayRoverInfo();
-    displayImg();
+    paintRovers(displayRoverInfo, displayImg);
+
+    
 
 }
-
-// ------------------------------------------------------  HIGUER ORDER FUNCTIONS
-
-//Crear funciones que reciban otras funciones por parametro. Funcional
-
 
 // ------------------------------------------------------  API CALLS
 

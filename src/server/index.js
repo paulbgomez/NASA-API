@@ -31,7 +31,7 @@ app.get('/rover-photos/:name', async (req, res) => {
                 formatedDate = date.toISOString().substring(0, 10);
                 break;
         }*/
-        let state = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${req.params.name}/latest_photos?api_key=${process.env.API_KEY}`)
+        let state = await fetch(`https://api.nasa.gov/mars-photos/api/v1/rovers/${req.params.name}/latest_photos?page=1&api_key=${process.env.API_KEY}`)
         .then(res => res.json());
         res.send({ state });
     } catch (err) {
