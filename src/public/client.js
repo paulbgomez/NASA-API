@@ -74,11 +74,24 @@ function renderRover(state){
     
     const displayImg = () => {
         let containerRoverPhotos = document.getElementById('rover-photos');
-        containerRoverPhotos.innerHTML = URL.map((url) => `
-                                    <div>
-                                    <img src="${url}"  alt="${data}">
-                                    </div>
-                                    `);
+        console.log(URL[0]);
+        let x ='';
+        x +=`<div class="carousel-item active">
+                <img src="${URL[0]}" class="d-block w-100" >
+            </div>`;
+        x += URL.map((url) => `
+          <div class="carousel-item">
+            <img src="${url}" class="d-block w-100" >
+          </div>`);
+        x += `  <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>`
+        containerRoverPhotos.innerHTML = x;
     }
     displayRoverInfo();
     displayImg();
