@@ -1,0 +1,48 @@
+/* -------------------  MOBILE  --------------------- */
+
+body {
+  display: flex;
+  flex-direction: column;
+  font-family: Arial;
+  min-height: 100vh;
+  background: rgb(232,232,232);
+  background: linear-gradient(0deg, rgba(232,232,232,1) 32%, rgba(244,171,141,0.9037990196078431) 100%);
+}
+
+header {
+  /* header styles */
+}
+
+main {
+  flex: 1;
+  margin: 0px;
+}
+
+.nav-link {
+  border: 0;
+  background-color: transparent;
+}
+
+
+footer {
+  /* footer styles */
+}
+
+/* -------------------  TABLET  --------------------- */
+@media (min-width: 768px) {
+  /* use mobile */
+}
+
+/* -------------------  DESKTOP  -------------------- */
+
+@media (min-width: 1224px) {
+  /* use mobile */
+}
+
+/* -------------------  LARGE SCREENS  -------------- */
+
+@media (min-width: 1824px) {
+  /* use mobile */
+}
+
+

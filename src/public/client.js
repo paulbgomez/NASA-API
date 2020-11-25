@@ -1,10 +1,8 @@
 // 1º Charge all the elements // OK
 // Global variables
 window.onload = function(){
-    startApp(root);
+    startApp();
 }
-
-const root = document.getElementById('root')
 
 const rovers = ['curiosity', 'opportunity', 'spirit'];
 
@@ -13,25 +11,23 @@ let state = {
 };
 
 // ------------------------------------------------------  FUNCTIONS
+const startApp = () => {
+    renderMenu();
+};
 
-const renderMain = () => {
-    root.style.display = 'none';
+const renderMenu = () => {
+    const containerMenuItems = document.getElementById('menu-items');
     let menuHTML = '';
-    for (let i = 0; i < rovers.length; i++) {
-       menuHTML += `<div>
-       <button class="btn" data-name="${rovers[i]}" >${rovers[i]}</button>
-       </div>`;
-    }
-    document.getElementById('box').innerHTML = menuHTML;
-    let arrayButtons = document.getElementsByTagName('button');
-    for (let i = 0; i < arrayButtons.length; i++) {
-        arrayButtons[i].addEventListener('click', loadRover);
-    }
-};
-
-const startApp = (root) => {
-    root.innerHTML = renderMain();
-};
+    menuHTML += `<button class="nav-link home">Home</button>`;
+        for (let i = 0; i < rovers.length; i++) {
+            menuHTML += `<button class="nav-link" data-name="${rovers[i]}">${rovers[i]}</button>`;
+        }
+    containerMenuItems.innerHTML = menuHTML;
+    let arrayButtons = document.getElementsByClassName('nav-link');
+        for (let i = 0; i < arrayButtons.length; i++) {
+            arrayButtons[i].addEventListener('click', loadRover);
+        }
+}
 
 const updateState = (state, newState) => {
     state = Object.assign(state, newState);
@@ -59,26 +55,34 @@ function renderRover(state){
 
     // Put rover data inside an object to display in a HTML
     const data = {
-       name: photos[0].rover.name,
-       launchDate: photos[0].rover.launch_date,
-       landingDate: photos[0].rover.landing_date,
-       missionStatus: photos[0].rover.status
+        name: photos[0].rover.name,
+        launchDate: photos[0].rover.launch_date,
+        landingDate: photos[0].rover.landing_date,
+        missionStatus: photos[0].rover.status,
+        photoDate: photos[0].earth_date
     }
 
+    const displayRoverInfo = () => {
+        let containerRover = document.getElementById('rover');
+        containerRover.innerHTML = `<img src="./assets/${state.roverSelection}.jpeg" class="img-fluid" alt="image rover">
+                                        <h1 class="text-center" >Name: ${data.name}</h1>
+                                        <h2 class="text-center" >Launch date: ${data.launchDate}</h2>
+                                        <h2 class="text-center" >Landing date: ${data.landingDate}</h2>
+                                        <h2 class="text-center" >Mission status: ${data.missionStatus}</h2>
+        `
+    }
+    
     const displayImg = () => {
-        root.style.display = 'block';
-        root.innerHTML = URL.map((url) => `
-            <div class="carousel-item">
-                <img class="carousel-item__img" src="${url}" alt="mars surface">
-                <div class="carousel-item__details">
-                    <p class="carousel-item__details--name">${data.name}</p>
-                    <p class="carousel-item__details--launch">Launched on ${data.launchDate}</p>
-                    <p class="carousel-item__details--land">Landed on ${data.landingDate}</p>
-                </div>
-            </div>`);
+        let containerRoverPhotos = document.getElementById('rover-photos');
+        containerRoverPhotos.innerHTML = URL.map((url) => `
+                                    <div>
+                                    <img src="${url}"  alt="${data}">
+                                    </div>
+                                    `);
     }
-
+    displayRoverInfo();
     displayImg();
+
 
 }
 
@@ -86,17 +90,7 @@ function renderRover(state){
 // ------------------------------------------------------  HIGUER ORDER FUNCTIONS
 
 //Crear funciones que reciban otras funciones por parametro. Funcional
-/*
-const createTags = (state) => {
-    let containerIntro = document.getElementById('container-intro');
-    containerIntro.style.display = 'none';
-    return `` //here comes the rover grid
-}
 
-const roverGrid = (rover) => ``;
-
-const photoHTML = (url) => `<img class="photo" src="${url}"/>`;
-*/
 
 // ------------------------------------------------------  API CALLS
 
