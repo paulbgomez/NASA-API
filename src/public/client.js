@@ -92,13 +92,13 @@ function renderRover(state){
                     <span class="sr-only">Next</span>
                 </a>`
         containerRoverPhotos.innerHTML = x;
+        console.log(containerRoverPhotos)
     }
+
     displayRoverInfo();
     displayImg();
 
-
 }
-
 
 // ------------------------------------------------------  HIGUER ORDER FUNCTIONS
 

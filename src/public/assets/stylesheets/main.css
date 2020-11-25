@@ -6,12 +6,9 @@ body {
   font-family: Arial;
   min-height: 100vh;
   background: rgb(232,232,232);
-  background: linear-gradient(0deg, rgba(232,232,232,1) 32%, rgba(244,171,141,0.9037990196078431) 100%);
+  background: linear-gradient(0deg, rgb(218, 218, 218) 32%, rgba(255, 255, 255, 0.904) 100%);
 }
 
-header {
-  /* header styles */
-}
 
 main {
   flex: 1;
@@ -23,10 +20,6 @@ main {
   background-color: transparent;
 }
 
-
-footer {
-  /* footer styles */
-}
 
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
