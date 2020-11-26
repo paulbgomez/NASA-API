@@ -32,6 +32,7 @@ main {
 
 }
 
+
 #data-info{
   font-family: 'Orbitron', sans-serif;
 }
@@ -48,6 +49,7 @@ main {
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
   /* use mobile */
+  
 }
 
 /* -------------------  DESKTOP  -------------------- */

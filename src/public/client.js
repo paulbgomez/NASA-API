@@ -9,6 +9,11 @@ window.onload = function(){
 
 const rovers = ['Curiosity', 'Opportunity', 'Spirit'];
 
+//const burguerMenu = document.getElementById('burguer-menu');
+//burguerMenu.addEventListener('click', () => {
+//    burguerMenu.ariaExpanded = !JSON.parse(burguerMenu.ariaExpanded);
+//  });
+
 
 let state = {
     roverSelection: '',
@@ -22,10 +27,15 @@ const startApp = () => {
 const renderMenu = () => {
     const containerMenuItems = document.getElementById('menu-items');
     let menuHTML = '';
-    menuHTML += `<button id="home" class="nav-link">Home</button>`;
+    menuHTML += `<ul class="navbar-nav">
+    <li class="nav-item">
+    <button id="home" class="nav-link">Home</button></li>`;
         for (let i = 0; i < rovers.length; i++) {
-            menuHTML += `<button class="nav-link rovers" data-name="${rovers[i]}">${rovers[i]}</button>`;
+            menuHTML += `<li class="nav-item">
+            <button class="nav-link rovers" data-name="${rovers[i]}">${rovers[i]}</button>
+            </li>`;
         }
+        menuHTML += `</ul>`
     containerMenuItems.innerHTML = menuHTML;
     const arrayButtons = document.getElementsByClassName('nav-link rovers');
         for (let i = 0; i < arrayButtons.length; i++) {
@@ -54,7 +64,7 @@ function refreshHome() {
         `
     };
 
-    const renderSpaceImage = () => `<img src="https://www.nationalgeographic.com/content/dam/magazine/rights-exempt/2020/10/departments/explore/departments-stellar-map-galaxy.adapt.1900.1.jpg"/>`
+    const renderSpaceImage = () => `<img id="home-image" class="img-fluid" src="https://www.nationalgeographic.com/content/dam/magazine/rights-exempt/2020/10/departments/explore/departments-stellar-map-galaxy.adapt.1900.1.jpg"/>`
 
     paintHome(hfo, renderSpaceImage);
 }
