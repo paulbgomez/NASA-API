@@ -1,11 +1,14 @@
 // 1º Charge all the elements // OK
 // Global variables
 
+
 window.onload = function(){
     startApp();
 }
 
+
 const rovers = ['Curiosity', 'Opportunity', 'Spirit'];
+
 
 let state = {
     roverSelection: '',
@@ -19,16 +22,18 @@ const startApp = () => {
 const renderMenu = () => {
     const containerMenuItems = document.getElementById('menu-items');
     let menuHTML = '';
-    menuHTML += `<button id="home" class="nav-link home">Home</button>`;
+    menuHTML += `<button id="home" class="nav-link">Home</button>`;
         for (let i = 0; i < rovers.length; i++) {
-            menuHTML += `<button class="nav-link" data-name="${rovers[i]}">${rovers[i]}</button>`;
+            menuHTML += `<button class="nav-link rovers" data-name="${rovers[i]}">${rovers[i]}</button>`;
         }
     containerMenuItems.innerHTML = menuHTML;
-    let arrayButtons = document.getElementsByClassName('nav-link');
+    const arrayButtons = document.getElementsByClassName('nav-link rovers');
         for (let i = 0; i < arrayButtons.length; i++) {
             arrayButtons[i].addEventListener('click', loadRover);
         }
     
+        const buttonHome = document.getElementById('home');
+        buttonHome.addEventListener('click', refreshHome);
 }
 
 const updateState = (state, newState) => {
@@ -37,6 +42,22 @@ const updateState = (state, newState) => {
 };
 
 // ------------------------------------------------------  COMPONENTS
+function refreshHome() {
+    let hfo = document.getElementById('higher-order-function');
+
+    const paintHome = (hfo, renderSpaceImage) => {
+         return hfo.innerHTML = 
+        `
+        <div>
+        ${renderSpaceImage()}
+        </div>
+        `
+    };
+
+    const renderSpaceImage = () => `<img src="https://www.nationalgeographic.com/content/dam/magazine/rights-exempt/2020/10/departments/explore/departments-stellar-map-galaxy.adapt.1900.1.jpg"/>`
+
+    paintHome(hfo, renderSpaceImage);
+}
 
 function loadRover(){
 
@@ -116,3 +137,51 @@ const getInfoRovers = (state) => {
         .then(res => res.json())
         .then(roverData => updateState(state, roverData));
 }
+
+/*
+//_____________________________________________________________________________________________________
+let store = {
+    apod: '',
+}
+
+let hfo = document.getElementById('higher-order-function');
+
+const updateStore = (store, newState) => {
+    store = Object.assign(store, newState);
+    render(hfo, store);
+}
+
+const render = async (hfo, state) => {
+    hfo.innerHTML = ImageOfTheDay(state);
+}
+
+const homeButton = document.getElementById('home');
+homeButton.addEventListener('click', render(hfo, store));
+
+// Example of a pure function that renders infomation requested from the backend
+const ImageOfTheDay = (apod) => {
+
+    // If image does not already exist, or it is not from today -- request it again
+    const today = new Date();
+
+    if (!apod || apod.date === today.getDate() ) {
+        getImageOfTheDay(state);
+    }
+
+    return `
+        <img src="${apod.image.url}" height="350px" width="100%" />
+        <p>${apod.image.explanation}</p>
+    `
+}
+
+
+    const getImageOfTheDay = (state) => {
+        let { apod } = state
+    
+        fetch(`http://localhost:3000/apod`)
+            .then(res => res.json())
+            .then(apod => updateStore(store, { apod }))
+    
+        return data
+    }
+*/
