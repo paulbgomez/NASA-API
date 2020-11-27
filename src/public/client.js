@@ -1,28 +1,20 @@
 // 1º Charge all the elements // OK
 // Global variables
-
+const divMain = document.getElementById('div-main');
+const homeImage = document.getElementById('home-image')
 
 window.onload = function(){
-    startApp();
+    renderMenu();
+    render(divMain, state);
 }
 
-
 const rovers = ['Curiosity', 'Opportunity', 'Spirit'];
-
-//const burguerMenu = document.getElementById('burguer-menu');
-//burguerMenu.addEventListener('click', () => {
-//    burguerMenu.ariaExpanded = !JSON.parse(burguerMenu.ariaExpanded);
-//  });
-
 
 let state = {
     roverSelection: '',
 };
 
 // ------------------------------------------------------  FUNCTIONS
-const startApp = () => {
-    renderMenu();
-};
 
 const renderMenu = () => {
     const containerMenuItems = document.getElementById('menu-items');
@@ -46,6 +38,18 @@ const renderMenu = () => {
         buttonHome.addEventListener('click', refreshHome);
 }
 
+const render = async(divMain, state) => {
+    divMain.innerHTML = startApp(state);
+}
+
+const startApp = (state) => `
+            <section>
+                <h2 class="text-center font-weight-bold">Welcome to the Mars Rover App</h2>
+                <h4 class="text-center font-weight-medium">See what they rovers have discovered with your own eyes.</h4>
+                ${renderRover(state)}
+            </section>
+            `
+
 const updateState = (state, newState) => {
     state = Object.assign(state, newState);
     renderRover(state);
@@ -53,10 +57,8 @@ const updateState = (state, newState) => {
 
 // ------------------------------------------------------  COMPONENTS
 function refreshHome() {
-    let hfo = document.getElementById('higher-order-function');
-
-    const paintHome = (hfo, renderSpaceImage) => {
-         return hfo.innerHTML = 
+    const paintHome = (divMain, renderSpaceImage) => {
+         return divMain.innerHTML = 
         `
         <div>
         ${renderSpaceImage()}
@@ -66,7 +68,7 @@ function refreshHome() {
 
     const renderSpaceImage = () => `<img id="home-image" class="img-fluid" src="https://www.nationalgeographic.com/content/dam/magazine/rights-exempt/2020/10/departments/explore/departments-stellar-map-galaxy.adapt.1900.1.jpg"/>`
 
-    paintHome(hfo, renderSpaceImage);
+    paintHome(divMain, renderSpaceImage);
 }
 
 function loadRover(){
@@ -80,38 +82,32 @@ function loadRover(){
 
 function renderRover(state){
 
-    //Get API photos
-    let photos = state.state.latest_photos;
-
-    // Map photo URLS to use afterwards with HTML function
-    const URL = photos.map(photo => photo.img_src);
-
-    // Put rover data inside an object to display in a HTML
-    const data = {
-        name: photos[0].rover.name,
-        launchDate: photos[0].rover.launch_date,
-        landingDate: photos[0].rover.landing_date,
-        missionStatus: photos[0].rover.status,
-        photoDate: photos[0].earth_date
+    //No rover is selcted, create a rover grid images. I need to refer to a HOF
+    if (!state.roverSelection) {
+        return (`<div class="text-center font-weight-small">
+                    Please select a Rover from the menu
+                </div>`);
     }
 
-   const paintRovers = (displayRoverInfo, displayImg) => {
-       let hfo = document.getElementById('higher-order-function');
-       hfo.innerHTML = `
-                        <section id="rover">
-                            ${displayRoverInfo()}
-                        </section>
-                        <section>
-                            <div class="container">
-                                <div id="image-container" class="row">
-                                    ${displayImg()}
-                                </div>
-                              </div>
-                        </section>
-                        `;
-   };
-                                                          
-    const displayRoverInfo = () => 
+    else {
+
+        homeImage.style.display = 'none';
+        //Get API photos
+        const photos = state.state.latest_photos;
+
+        // Map photo URLS to use afterwards with HTML function
+        const urlPhotos = photos.map(photo => photo.img_src);
+
+        // Put rover data inside an object to display in a HTML
+        const data = {
+            name: photos[0].rover.name,
+            launchDate: photos[0].rover.launch_date,
+            landingDate: photos[0].rover.landing_date,
+            missionStatus: photos[0].rover.status,
+            photoDate: photos[0].earth_date
+        }
+
+        const displayRoverInfo = () => 
         `<img src="./assets/${state.roverSelection}.jpeg" class="img-fluid" alt="image rover">
             <div id="data-info">
                 <h2 class="text-center font-weight-bold">Name: ${data.name}</h2>
@@ -120,25 +116,60 @@ function renderRover(state){
                 <h2 class="text-center font-weight-normal">Mission status: ${data.missionStatus}</h2>
             </div>
         `;
-    
-    const displayImg = () => {
-        let html = '';
-        if(URL.length < 3){
-            for(let i = 0; i < URL.length; i++){
-                html += `<div class="col-sm"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
-            }
-        }
-        else{
-            for(let i = 0; i < URL.length; i++){
-                html += `<div class="col-sm-4"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
-            }
-        }
-        return html;
-    };
 
-    paintRovers(displayRoverInfo, displayImg);
-
+        return divMain.innerHTML =  (`
+            <div id="rover-container">
+                <div id="rover">
+                    ${displayRoverInfo()}
+                </div>
+                <div class="container">
+                    ${createImgContainer(state.roverSelection, "row", urlPhotos, displayImg)}
+                </div>
+            </div>
+            `);
+    }
 }
+
+// HOF
+
+const createImgContainer = (state, divClassBootstrap, array, displayImg) => {
+                                                                                return (`
+                                                                                <div ${divClassBootstrap}>
+                                                                                    ${displayImg(state, array)}
+                                                                                </div>
+                                                                            `)}
+    
+
+const displayImg = (state, array) => {
+    if(array.length < 3){
+        return( `  
+                <div class="col-sm">
+                    <img src="${array}" alt="Image from Mars taken by the ${state} Rover"/>
+                </div>
+                `);
+            }
+    array.forEach((url) =>{
+        return (`  
+        <div class="col-sm-4">
+            <img src="${url}" alt="Image from Mars taken by the ${state} Rover"/>
+        </div>
+        `);
+    });
+}
+
+
+/*
+    if(urlPhotos.length < 3){
+        for(let i = 0; i < URL.length; i++){
+            html += `<div class="col-sm"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
+        }
+    }
+    else{
+        for(let i = 0; i < URL.length; i++){
+            html += `<div class="col-sm-4"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
+        }
+    }
+*/
 
 // ------------------------------------------------------  API CALLS
 
@@ -147,51 +178,3 @@ const getInfoRovers = (state) => {
         .then(res => res.json())
         .then(roverData => updateState(state, roverData));
 }
-
-/*
-//_____________________________________________________________________________________________________
-let store = {
-    apod: '',
-}
-
-let hfo = document.getElementById('higher-order-function');
-
-const updateStore = (store, newState) => {
-    store = Object.assign(store, newState);
-    render(hfo, store);
-}
-
-const render = async (hfo, state) => {
-    hfo.innerHTML = ImageOfTheDay(state);
-}
-
-const homeButton = document.getElementById('home');
-homeButton.addEventListener('click', render(hfo, store));
-
-// Example of a pure function that renders infomation requested from the backend
-const ImageOfTheDay = (apod) => {
-
-    // If image does not already exist, or it is not from today -- request it again
-    const today = new Date();
-
-    if (!apod || apod.date === today.getDate() ) {
-        getImageOfTheDay(state);
-    }
-
-    return `
-        <img src="${apod.image.url}" height="350px" width="100%" />
-        <p>${apod.image.explanation}</p>
-    `
-}
-
-
-    const getImageOfTheDay = (state) => {
-        let { apod } = state
-    
-        fetch(`http://localhost:3000/apod`)
-            .then(res => res.json())
-            .then(apod => updateStore(store, { apod }))
-    
-        return data
-    }
-*/
