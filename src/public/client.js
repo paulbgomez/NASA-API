@@ -45,7 +45,7 @@ const render = async(divMain, state) => {
 const startApp = (state) => `
             <section>
                 <h2 class="text-center font-weight-bold">Welcome to the Mars Rover App</h2>
-                <h4 class="text-center font-weight-medium">See what they rovers have discovered with your own eyes.</h4>
+                <h4 class="text-center font-weight-medium">See what the rovers have discovered with your own eyes.</h4>
                 ${renderRover(state)}
             </section>
             `
@@ -72,7 +72,6 @@ function refreshHome() {
 }
 
 function loadRover(){
-
     //Get the name of the selected rover
     state.roverSelection = this.dataset.name;
 
@@ -134,42 +133,31 @@ function renderRover(state){
 
 const createImgContainer = (state, divClassBootstrap, array, displayImg) => {
                                                                                 return (`
-                                                                                <div ${divClassBootstrap}>
+                                                                                <div class="${divClassBootstrap}">
                                                                                     ${displayImg(state, array)}
                                                                                 </div>
                                                                             `)}
     
-
 const displayImg = (state, array) => {
     if(array.length < 3){
-        return( `  
-                <div class="col-sm">
-                    <img src="${array}" alt="Image from Mars taken by the ${state} Rover"/>
+        const imageElements = array.map((url) =>{
+            return (`  
+                    <div id="image-container" class="col-sm">
+                        <img src="${url}" alt="Image from Mars taken by the ${state} Rover"/>
+                    </div>
+                    `);
+                });
+        return imageElements.reduce( (a,b) => a+b );
+            }
+    const imageElements = array.map((url) =>{
+        return (`  
+                <div id="image-container" class="col-sm-4">
+                    <img src="${url}" alt="Image from Mars taken by the ${state} Rover"/>
                 </div>
                 `);
-            }
-    array.forEach((url) =>{
-        return (`  
-        <div class="col-sm-4">
-            <img src="${url}" alt="Image from Mars taken by the ${state} Rover"/>
-        </div>
-        `);
-    });
+            });
+    return imageElements.reduce( (a,b) => a+b );
 }
-
-
-/*
-    if(urlPhotos.length < 3){
-        for(let i = 0; i < URL.length; i++){
-            html += `<div class="col-sm"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
-        }
-    }
-    else{
-        for(let i = 0; i < URL.length; i++){
-            html += `<div class="col-sm-4"><img src="${URL[i]}" alt="Image from Mars taken by the ${data.name} Rover"/></div>`;
-        }
-    }
-*/
 
 // ------------------------------------------------------  API CALLS
 
