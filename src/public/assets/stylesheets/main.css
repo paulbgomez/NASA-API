@@ -27,7 +27,6 @@ main {
 #image-container img{
   width: 80%;
   margin: 40px 0;
-  z-index: 900;
   border-radius: 5%;
 }
 
@@ -44,20 +43,57 @@ main {
 
 /* -------------------  TABLET  --------------------- */
 @media (min-width: 768px) {
-  /* use mobile */
+  h2 {
+    font-size: 4rem;
+  }
+
+  h4 {
+    font-size: 2.2rem;
+  }
   
+  #image-container img {
+    width: 80%;
+    margin: 18px;
+  }
 }
 
 /* -------------------  DESKTOP  -------------------- */
 
 @media (min-width: 1224px) {
-  /* use mobile */
+
+  h2 {
+    font-size: 5rem;
+  }
+
+  h4 {
+    font-size: 2.5rem;
+  }
+
+  #image-container img {
+    width: 80%;
+    margin: 18px;
+  }
 }
 
 /* -------------------  LARGE SCREENS  -------------- */
 
 @media (min-width: 1824px) {
-  /* use mobile */
+  h2 {
+    font-size: 6.8rem;
+  }
+
+  h4 {
+    font-size: 3rem;
+  }
+
+  ul {
+    font-size: 3rem;
+  }
+
+  #image-container img {
+    width: 80%;
+    margin: 18px;
+  }
 }
 
 

@@ -1,5 +1,6 @@
 // 1º Charge all the elements // OK
 // Global variables
+
 const divMain = document.getElementById('div-main');
 const homeImage = document.getElementById('home-image')
 
@@ -7,12 +8,12 @@ window.onload = function(){
     renderMenu();
     render(divMain, state);
 }
-
-const rovers = ['Curiosity', 'Opportunity', 'Spirit'];
-
+// eslint-disable-next-line no-undef
 let state = {
     roverSelection: '',
-};
+    // eslint-disable-next-line no-undef
+    rovers: Immutable.List(['Curiosity', 'Spirit', 'Opportunity']),
+}
 
 // ------------------------------------------------------  FUNCTIONS
 
@@ -22,12 +23,12 @@ const renderMenu = () => {
     menuHTML += `<ul class="navbar-nav">
     <li class="nav-item">
     <button id="home" class="nav-link">Home</button></li>`;
-        for (let i = 0; i < rovers.length; i++) {
-            menuHTML += `<li class="nav-item">
-            <button class="nav-link rovers" data-name="${rovers[i]}">${rovers[i]}</button>
-            </li>`;
-        }
-        menuHTML += `</ul>`
+    state.rovers.map((name) => {
+      return menuHTML += `<li class="nav-item">
+      <button class="nav-link rovers" data-name="${name}">${name}</button>
+      </li>`;  
+    });
+    menuHTML += `</ul>`
     containerMenuItems.innerHTML = menuHTML;
     const arrayButtons = document.getElementsByClassName('nav-link rovers');
         for (let i = 0; i < arrayButtons.length; i++) {
@@ -110,9 +111,9 @@ function renderRover(state){
         `<img src="./assets/${state.roverSelection}.jpeg" class="img-fluid" alt="image rover">
             <div id="data-info">
                 <h2 class="text-center font-weight-bold">Name: ${data.name}</h2>
-                <h2 class="text-center font-weight-normal">Launch date: ${data.launchDate}</h2>
-                <h2 class="text-center font-weight-normal">Landing date: ${data.landingDate}</h2>
-                <h2 class="text-center font-weight-normal">Mission status: ${data.missionStatus}</h2>
+                <h4 class="text-center font-weight-normal">Launch date: ${data.launchDate}</h2>
+                <h4 class="text-center font-weight-normal">Landing date: ${data.landingDate}</h2>
+                <h4 class="text-center font-weight-normal">Mission status: ${data.missionStatus}</h2>
             </div>
         `;
 
