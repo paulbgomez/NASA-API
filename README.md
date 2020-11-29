@@ -21,16 +21,16 @@ There is an included file called *.env-sample*. You may add your key to this tem
 This file will be ignore by .gitignore; so the API key will remain private.
 
 ## Installation
-Install the dependencies with Node or Yarn.
-If you don't have Yarn, you can download it [**here**] (https://classic.yarnpkg.com/en/docs/install#mac-stable)
+Install the dependencies with Node.
+
 
 ```
-npm install || yarn install
+npm install 
 ```
 When those packages have installed, use the following command to start the *Express* server.
 
 ```
-npm start || yarn start
+npm start 
 ```
 
 ## Using the App
